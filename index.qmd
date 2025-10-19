@@ -1,0 +1,357 @@
+---
+format:
+  revealjs:
+    theme: night
+    css: custom.css
+    auto-stretch: false
+    transition: fade
+    slide-number: true
+    incremental: true
+    chalkboard: true
+    title-slide-attributes:
+      data-background-image: codabr.png
+editor: visual
+execute: 
+  echo: true
+  eval: false
+  warning: false 
+  message: false
+---
+
+# {background-image=img/codabr.png background-size="cover"}
+
+# Meu primeiro pacote R {background-image=img/slide1.png background-size="cover"}
+
+facilitando a rotina de análises
+  
+<br><br>
+Renata Hirota 
+
+[hirota.dev](hirota.dev)
+
+<!-- ## 👋 Olá
+
+Renata Hirota é jornalista, estatística e mestranda no IME-USP. Atua como 
+analista de dados no Jusbrasil, com foco em jurimetria para soluções B2B. 
+Também colabora com a InfoAmazonia, analisando dados geoespaciais para 
+reportagens sobre mudanças climáticas. Já trabalhou no Volt Data Lab e na 
+Associação Brasileira de Jurimetria (ABJ), além de atuar como consultora em 
+projetos jornalísticos orientados por dados.
+ -->
+
+## Neste workshop, vamos ver...
+
+- Estrutura de um pacote
+- Uso dos pacotes `usethis` e `devtools`
+- Documentação com `roxygen2`
+- Instalação local
+- Publicação no GitHub
+
+## Pré-requisitos
+
+- RStudio, VSCode ou qualquer outro editor
+- Conta no GitHub (opcional para publicação)
+- Pacotes:
+  - usethis
+  - devtools
+  - roxygen2
+  - testhat
+
+. . .
+
+```{r}
+install.packages(c("usethis", "devtools", "roxygen2", "testthat"))
+```
+
+# Criando o pacote {.bg-blue}
+
+![](https://github.com/rstudio/hex-stickers/blob/main/PNG/usethis.png?raw=true){fig-align="center" width="20%"}
+
+
+
+## Criando o pacote
+
+. . . 
+
+```{r}
+usethis::create_package("meuPrimeiroPacote")
+```
+
+. . . 
+
+Isso cria a estrutura básica do pacote
+
+. . . 
+
+```
+meuPrimeiroPacote/
+├── R/
+├── man/
+├── DESCRIPTION
+├── NAMESPACE
+├── meuPrimeiroPacote.Rproj
+└── .gitignore (se git estiver ativado)
+
+```
+
+. . . 
+
+# O que cada pasta/arquivo faz? {.bg-orange}
+
+## Pasta R/
+
+Local onde ficam todas as funções do seu pacote.
+Cada função (ou grupo de funções relacionadas) deve ser salva em um arquivo `.R`.  
+  
+
+Exemplo: `soma_quadrado.R` conterá a função `soma_quadrado()`.  
+  
+  
+> 💡 Dica: mantenha funções organizadas por tema para facilitar manutenção.
+
+## Pasta man/
+
+Contém a documentação gerada automaticamente das funções, no formato `.Rd`.
+
+Esses arquivos são criados ao rodar `devtools::document()` a partir dos comentários `#'` com `roxygen2`.
+
+<mark>❗ Nunca edite esses arquivos manualmente.</mark>
+
+## Arquivo DESCRIPTION
+
+É o coração do pacote, com as informações principais:
+
+- Nome, versão, autor, descrição
+- Dependências (pacotes que seu pacote usa)
+
+. . .
+
+Funciona como o “currículo” do seu pacote.
+
+## Arquivo NAMESPACE
+
+Define o que o pacote exporta (torna público) e importa (usa de outros pacotes).
+
+É gerado automaticamente com `roxygen2` (com @export, @import etc.).
+
+<mark>❗ Nunca edite manualmente.</mark>
+
+## Arquivo .Rproj
+
+Arquivo de projeto do RStudio.
+
+Permite abrir o projeto com configurações próprias.
+
+Recomendado sempre usar `.Rproj` para facilitar o desenvolvimento.
+
+## Arquivo .gitignore (opcional)
+
+Se você usar `usethis::use_git()`, esse arquivo será criado.
+
+Ele indica quais arquivos/pastas o Git deve ignorar (ex: `.Rhistory`, `*.RData`, etc.).
+
+## Outros arquivos que podem surgir
+
+Durante o desenvolvimento, outras pastas e arquivos podem ser adicionados:
+
+- `tests/`: testes automatizados (`testthat`)
+- `README.md`: instruções básicas
+- `.github/`: workflows de GitHub Actions (CI/CD)
+- `vignettes/`: tutoriais/documentações longas
+- `data/  `: dados incluídos no pacote
+
+## Editando o DESCRIPTION
+
+```{r}
+usethis::use_description(fields = list(
+  Title = "Meu Primeiro Pacote",
+  Description = "Funções para automatizar análises em R.",
+  Author = "Seu Nome [aut, cre]",
+  License = "MIT",
+  Encoding = "UTF-8"
+))
+```
+
+. . . 
+
+O `usethis` também tem várias outras funções auxiliares que ajudam com esses detalhes:
+
+- `usethis::use_mit_license()`
+- `usethis::use_readme_md()`
+- `usethis::use_logo()`
+
+
+# Funções e documentação {.bg-blue}
+
+![](https://github.com/rstudio/hex-stickers/blob/main/PNG/roxygen2.png?raw=true){width="20%"}
+
+## Criando a primeira função
+
+Crie um arquivo dentro da pasta R: `R/soma_quadrado.R`
+  
+(Você também pode fazer isso rodando a função `use_r`)
+
+```{r}
+usethis::use_r("soma_quadrado")
+```
+
+Inclua o seguinte trecho de código no arquivo:
+
+```{r}
+soma_quadrado <- function(x, y) {
+  x^2 + y^2
+}
+```
+
+## Documentando a função com `roxygen2`
+
+Antes de documentar sua função, vamos entender o que cada bloco da sintaxe `roxygen2` significa.
+
+```{r}
+#| code-line-numbers: "1|3|5,6|7|8|9,10"
+
+#' Título curto da função
+#'
+#' Descrição mais completa da função, com o que ela faz.
+#'
+#' @param x Descrição do argumento x
+#' @param y Descrição do argumento y
+#' @return O que a função retorna
+#' @export
+#' @examples
+#' minha_funcao(1, 2)
+minha_funcao <- function(x, y) {
+  x + y
+}
+
+```
+
+## O que significa cada parte?
+
+- `#'` → Comentário especial reconhecido pelo `roxygen2`
+- **Título** → Primeira linha: breve e clara
+- **Descrição** → Uma ou mais linhas com o que a função faz
+
+. . . 
+
+### Tags mais comuns:
+- `@param` → Descreve os argumentos (um por linha)
+- `@return` → Explica o que a função retorna
+- `@examples` → Mostra como usar a função na prática
+- `@export` → Faz a função ser acessível ao usuário do pacote
+
+
+## Função com `roxygen2`
+
+```{r}
+#' Soma dos quadrados
+#'
+#' Esta função calcula a soma dos quadrados de dois números.
+#'
+#' @param x Número 1
+#' @param y Número 2
+#'
+#' @return A soma dos quadrados
+#' @export
+soma_quadrado <- function(x, y) {
+  x^2 + y^2
+}
+```
+
+. . .
+
+Gerando a documentação:
+```{r}
+devtools::document()
+```
+
+- Gera os arquivos .Rd na pasta man/
+- Atualiza o NAMESPACE
+
+# Testes unitários {.bg-blue}
+
+![](https://github.com/rstudio/hex-stickers/blob/main/PNG/testthat.png?raw=true){fig.align="center" width="20%"}
+
+## Testando a função
+
+
+```{r}
+devtools::load_all()
+soma_quadrado(3, 4)  # Esperado: 25
+
+```
+
+## Adicionando testes
+
+```{r}
+usethis::use_testthat()
+usethis::use_test("soma_quadrado")
+
+```
+
+Arquivo gerado: `tests/testthat/test-soma_quadrado.R`
+
+
+```{r}
+test_that("soma_quadrado funciona corretamente", {
+  expect_equal(soma_quadrado(3, 4), 25)
+})
+
+```
+
+## Instalando o pacote localmente
+
+```{r}
+devtools::install()
+
+library(meuPrimeiroPacote)
+soma_quadrado(2, 2)
+
+```
+
+## Publicando no GitHub
+
+
+```{r}
+usethis::use_git()
+usethis::use_github()
+
+```
+
+- Autentique com sua conta
+- Pronto para compartilhar!
+
+## ✅ Resumindo
+
+- Use `roxygen2` para documentar tudo
+- Use testes com `testthat`
+- Mantenha funções organizadas
+- Documente e atualize sempre
+
+## Dúvidas?
+
+![](img/usethis.png){fig-align="center" width="80%"}
+
+Arte: [@allison_horst](https://twitter.com/allison_horst)
+
+
+
+## 🧑‍💻 Mãos na massa!
+
+1. Crie seu próprio pacote
+2. 1 ou 2 funções personalizadas
+3. Documentação + teste
+4. Instale localmente
+5. Publique no GitHub (se quiser)
+
+
+## 📚 Recursos
+
+- Livro [R Packages – Hadley Wickham, Jenny Bryan](https://r-pkgs.org/)
+- Livro [Zen do R](https://curso-r.github.io/zen-do-r/index.html)
+- Curso-R 
+  - Repositório do curso de pacotes  
+  [https://curso-r.github.io/main-pacotes/](https://curso-r.github.io/main-pacotes/)
+  - Slides do curso de pacotes  
+  [https://curso-r.github.io/main-pacotes/slides/](https://curso-r.github.io/main-pacotes/slides/)
+

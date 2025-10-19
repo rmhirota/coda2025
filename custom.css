@@ -1,0 +1,111 @@
+/* Fonte geral */
+.reveal {
+  font-family: 'Roboto Mono', Arial, monospace;
+  color: #103aaf;
+  font-size: 30px;
+  background-color: white;
+}
+
+/* Títulos */
+
+.reveal h1 {
+  font-family: 'Roboto Mono', Arial, monospace;
+  color: white;
+  font-size: 1.5em;
+}
+
+.reveal h2, .reveal h3 {
+  font-family: 'Roboto Mono', Arial, monospace;
+  color: #000d56;
+  letter-spacing: 0.5px;
+}
+
+/* Título de destaque com fundo azul escuro */
+.reveal .title-slide {
+  color: white;
+  text-align: left;
+  margin-left: 1em;
+  font-size: "10px";
+}
+
+
+/* Slides com destaque azul claro */
+.reveal .bg-light-blue {
+  background-color: #DDF1FF;
+  padding: 2em;
+  border-radius: 12px;
+}
+
+.reveal mark {
+  background-color: #FFA07A; /* cor de destaque personalizada */
+  padding: 0.2em 0.4em;      /* espaço interno */
+  color: #103aaf;
+  border-radius: 4px;        /* cantos arredondados */
+}
+
+.reveal blockquote {
+  background-color: #FFDE7D; /* cor de destaque personalizada */
+  margin-top: 2em;
+  padding: 0.1em 0.1em;      /* espaço interno */
+  color: #103aaf;
+  border-radius: 4px;        /* cantos arredondados */
+}
+
+/* Slides com intertítulos em laranja */
+.reveal .bg-orange {
+  background-color: #FFA07A !important;
+  color: #000d56 !important;
+  padding: 1em;
+  font-size: 25px;
+}
+
+.reveal .bg-orange h1,
+.reveal .bg-orange h2,
+.reveal .bg-orange h3 {
+  color: #000d56 !important;
+}
+
+.reveal .bg-blue {
+  background-color: #abeeff !important;
+  color: #000d56 !important;
+  text-align: center !important;
+  padding: 1em;
+  font-size: 25px;
+}
+
+
+/* Destaques grandes (como '59%') */
+.reveal .highlight-big {
+  font-size: 3em;
+  font-weight: bold;
+  color: #002C6D;
+}
+
+/* Citações em slides escuros */
+.reveal .quote-slide {
+  background-color: #001844;
+  color: #103aaf;
+  font-style: italic;
+  padding: 2em;
+}
+
+/* Tabelas */
+.reveal table {
+  border-collapse: collapse;
+  width: 100%;
+}
+
+.reveal th, .reveal td {
+  border: 1px solid #ccc;
+  padding: 0.5em;
+  text-align: left;
+}
+
+.reveal th {
+  background-color: #f5f5f5;
+}
+
+/* Bullet points personalizados */
+.reveal ul li::marker {
+  color: #002C6D;
+}
